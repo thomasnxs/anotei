@@ -1,12 +1,25 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { router } from "expo-router";
-import {colors} from '@/src/app/constants/colors'
+import {colors} from '@/src/constants/colors'
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useState } from "react";
 
 
+export default function Login () {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-export default function () {
+  function handleSingIn(){
+    console.log({
+      email,
+      password
+    })
+  }
+
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={theme.background}>
         <View style={theme.container}>
           <TouchableOpacity style={theme.backButton} onPress={router.back}>
@@ -14,26 +27,31 @@ export default function () {
           </TouchableOpacity>
             <Image
               source={require('@/assets/images/icon-anotei.png')}
-              style={{ width: 200, height: 200, alignSelf:'center', marginTop:60}}
+              style={{ width: 200, height: 200, alignSelf:'center', marginTop:10}}
               
             />
             <Text style={theme.title}>Entrar</Text>
             <TextInput 
             style={theme.input} 
-            placeholder="Email"
+            placeholder="E-mail"
+            value = {email}
+            onChangeText={setEmail}
             ></TextInput>
             <TextInput 
             style={theme.input}
             placeholder="Senha"
             secureTextEntry
+            value = {password}
+            onChangeText={setPassword}
             ></TextInput>
             <TouchableOpacity>
               <Text style={theme.forgotPasswordText} onPress={() => router.navigate('/(auth)/forgotPassword')}>Esqueci minha senha</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={theme.button}><Text>Entrar</Text></TouchableOpacity>
+            <TouchableOpacity style={theme.button} onPress={handleSingIn}><Text>Entrar</Text></TouchableOpacity>
             <TouchableOpacity><Text style={theme.textButton} onPress={() => router.navigate('/(auth)/register')}>Cadastre-se</Text></TouchableOpacity>
         </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -54,7 +72,6 @@ const theme = StyleSheet.create({
     marginTop:14
   },
   input:{
-    borderBlockColor:'grey',
     alignItems:'center',
     backgroundColor:'white',
     padding:20,
@@ -62,7 +79,6 @@ const theme = StyleSheet.create({
     flex:1,
     marginLeft:35,
     marginRight:35,
-    borderWidth:2,
     marginBottom:8,
     marginTop:12
   },
@@ -77,7 +93,6 @@ const theme = StyleSheet.create({
 },
 backButton:{
   marginLeft:30,
-  marginTop:30
 },
 title:{
   fontSize:25,

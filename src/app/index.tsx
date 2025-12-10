@@ -1,15 +1,16 @@
 import { router } from "expo-router";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {colors} from '@/src/app/constants/colors'
+import {colors} from '@/src/constants/colors'
+import { SafeAreaView } from "react-native-safe-area-context";
 
-
-export default function () {
+export default function index() {
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={authTheme.background}>
         <View style={authTheme.container}>
           <Image
           source={require('@/assets/images/icon-anotei.png')}
-          style={{ width: 200, height: 200 }}
+          style={{ width: 200, height: 200, alignSelf:'center', marginTop:10}}
           />
         </View>
         <View style={authTheme.splashContainer}>
@@ -29,6 +30,7 @@ export default function () {
             </TouchableOpacity>
         </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -53,11 +55,10 @@ const authTheme = StyleSheet.create({
   },
   splashContainer:{
       alignItems:'center',
-      paddingVertical:200,
+      paddingVertical:100,
       //backgroundColor:'green'
   },
   input:{
-      borderBlockColor:'grey',
       alignItems:'center',
       backgroundColor:'white',
       padding:20,
@@ -65,7 +66,6 @@ const authTheme = StyleSheet.create({
       flex:1,
       marginLeft:35,
       marginRight:35,
-      borderWidth:2,
       marginBottom:8,
       marginTop:8
 
@@ -76,7 +76,7 @@ const authTheme = StyleSheet.create({
       backgroundColor:colors.primary,
       flex:1,
       alignItems:'center',
-      padding:20,
+      padding:10,
       borderRadius:10,
   },
   textButton:{

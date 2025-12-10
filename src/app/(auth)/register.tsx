@@ -1,11 +1,49 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Alert} from "react-native";
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { router } from "expo-router";
-import {colors} from '@/src/app/constants/colors'
+import {colors} from '@/src/constants/colors'
+import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {supabase} from '../../lib/supabase'
 
 
-export default function () {
+
+
+
+
+
+
+export default function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
+
+  async function handleSingUp(){
+    setLoading(true);
+
+    const {data, error} = await supabase.auth.signUp({
+      email: email,
+      password: password
+    })
+
+    if(error){
+      Alert.alert('Error', error.message)
+      setLoading(false);
+      return;
+
+    }
+    setLoading(false);
+    Alert.alert('Cadastrado com sucesso!')
+    router.replace('/(auth)/login')
+
+  }
+
+
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={theme.background}>
         <View style={theme.container}>
           <TouchableOpacity style={theme.backButton} onPress={router.back}>
@@ -13,27 +51,33 @@ export default function () {
           </TouchableOpacity>
             <Image
               source={require('@/assets/images/icon-anotei.png')}
-              style={{ width: 200, height: 200, alignSelf:'center', marginTop:40}}
+              style={{ width: 200, height: 200, alignSelf:'center', marginTop:10}}
               
             />
             <Text style={theme.title}>Crie sua conta</Text>
             <TextInput 
               style={theme.input} 
-              placeholder="Email"
+              placeholder="Nome completo"
+              value = {name}
+              onChangeText={setName}
+            ></TextInput>
+            <TextInput 
+              style={theme.input}
+              placeholder="E-mail"
+              value = {email}
+              onChangeText={setEmail}
             ></TextInput>
             <TextInput 
               style={theme.input}
               placeholder="Senha"
               secureTextEntry
+              value = {password}
+              onChangeText={setPassword}
             ></TextInput>
-            <TextInput 
-              style={theme.input}
-              placeholder="Confirmar senha"
-              secureTextEntry
-            ></TextInput>
-            <TouchableOpacity style={theme.button}><Text>Criar Conta</Text></TouchableOpacity>
+            <TouchableOpacity style={theme.button} onPress={handleSingUp}><Text>Criar Conta</Text></TouchableOpacity>
         </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -54,7 +98,6 @@ const theme = StyleSheet.create({
     marginTop:14
   },
   input:{
-    borderBlockColor:'grey',
     alignItems:'center',
     backgroundColor:'white',
     padding:20,
@@ -62,7 +105,6 @@ const theme = StyleSheet.create({
     flex:1,
     marginLeft:35,
     marginRight:35,
-    borderWidth:2,
     marginBottom:8,
     marginTop:12
   },
@@ -77,7 +119,6 @@ const theme = StyleSheet.create({
 },
 backButton:{
   marginLeft:30,
-  marginTop:30
 },
 title:{
   fontSize:25,
